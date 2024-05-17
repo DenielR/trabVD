@@ -4,15 +4,26 @@ sql:
 ---
 
 # Teste SQL
-
-```sql id = teste display
-WITH TotalCount AS (
-    SELECT COUNT(*) as total
-    FROM spotify
-)
-SELECT mode, 
-       COUNT(*) as count, 
-       (COUNT(*) * 100.0 / (SELECT total FROM TotalCount)) as percentage
-FROM spotify
-GROUP BY mode
+```sql id = histograma display
+SELECT * FROM spotify
 ```
+
+```sql id = histograma display
+WITH SplitArtists AS (
+    SELECT 
+        unnest(regexp_split_to_array(artists_name, ', ')) AS artist,
+        streams,
+        released_year,
+        track_name
+    FROM 
+        spotify
+)
+SELECT 
+    artist AS artists,
+    streams,
+    track_name,
+    released_year
+FROM 
+    SplitArtists;
+```
+

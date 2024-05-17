@@ -55,6 +55,7 @@ const divWidth = Generators.width(document.querySelector("#ex01"));
 
 ```js
 const gapSubset = gap.filter(d => d['year'] === year);
+view(Inputs.table(gapSubset));
 ```
 
 ```js
