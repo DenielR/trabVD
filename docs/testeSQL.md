@@ -5,6 +5,14 @@ sql:
 
 # Teste SQL
 
-```sql
-SELECT * FROM spotify
+```sql id = teste display
+WITH TotalCount AS (
+    SELECT COUNT(*) as total
+    FROM spotify
+)
+SELECT mode, 
+       COUNT(*) as count, 
+       (COUNT(*) * 100.0 / (SELECT total FROM TotalCount)) as percentage
+FROM spotify
+GROUP BY mode
 ```
