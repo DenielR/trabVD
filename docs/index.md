@@ -2,176 +2,37 @@
 toc: true
 ---
 
+# Trabalho 1
+
 <style>
     body, div, p, li, ol { max-width: none; }
 </style>
 
-# Exemplo de Aplicação
+## Instruções gerais
+Neste trabalho vocês devem analisar, utilizando visualizações, o conjunto de dados fornecido no link abaixo. Mais precisamente, vocês devem responder cada pergunta proposta abaixo e cada resposta deve conter:
 
-Análise do conjunto de dados da [Gapminder](https://www.gapminder.org/), simulando a visualização de dados proposta por Hans Rosling no Ted Talk [The best stats You've ever seen](https://www.ted.com/talks/hans_rosling_the_best_stats_you_ve_ever_seen).
+1) Um conjunto de visualizações;
+2) Uma discussão sobre as razões que motivaram a escolha das visualização desenvolvidas, e;
+3) Uma análise das informações que podem ser obtidas com a interpretação da visualização.
 
-## Data set
+Tanto os gráficos quanto as informações solicitadas devem estar contidas na aplicação desenvolvida.
 
-```js
-const gap = await FileAttachment("./data/gap.json").json({typed: true});
-const yrs = gap.map(d => d['year']);
-
-const min = Math.min(...yrs);
-const max = Math.max(...yrs);
-
-view(Inputs.table(gap));
-```
-
-## Interações
-```js
-
-const year = view(Inputs.range([min, max], {value: min, step: 5, label: "Years"}))
-```
-
-## Visualizações
-
-<div class="grid grid-cols-2">
-    <div id="ex01" class="card grid-colspan-2" >
-        <h2 class="title">Fertilidade X Espectativa de Vida no ano ${year}</h2>
-        <div style="width: 100%; margin-top: 15px;">
-            ${ vl.render(ex01(divWidth - 200)) }
-        </div>
-    </div>
-    <div id="ex02" class="card grid-colspan-2">
-        <h2>População por país no ano ${year}</h2>
-        <div style="width: 100%; margin-top: 15px;">
-            ${ vl.render(ex02(divWidth - 55)) }
-        </div>
-    </div>
-</div>
-
-<!--Tamanho dos cards. Caso vcs usem cards de multiplos tamanhos, 
-    será necessário criar um generator para cada classe de card.
--->
-```js
-const divWidth = Generators.width(document.querySelector("#ex01"));
-
-```
-
-```js
-const gapSubset = gap.filter(d => d['year'] === year);
-view(Inputs.table(gapSubset));
-```
-
-```js
-import * as vega from "npm:vega";
-import * as vegaLite from "npm:vega-lite";
-import * as vegaLiteApi from "npm:vega-lite-api";
-
-const vl = vegaLiteApi.register(vega, vegaLite);
-
-function ex01(divWidth) {
-    return {
-        spec: {
-            width: divWidth,
-            height: 400,
-            data: {
-                values: gapSubset
-            },
-            "mark": {
-                "type": "point",
-                "filled": true,
-                "opacity": 0.5,
-                "tooltip": true
-            },
-            "encoding": {
-                "x": {
-                    "field": "fertility",
-                    "type": "quantitative",
-                    "scale": {
-                        "domain": [0, 9]
-                    }
-                },
-                "y": {
-                    "field": "life_expect",
-                    "type": "quantitative",
-                    "scale": {
-                        "domain": [0, 90]
-                    }
-                },
-                "size": {
-                    "field": "pop",
-                    "type": "quantitative",
-                    "scale": {
-                        "range": [50, 5000],
-                        "domain": [200000, 1200000000]
-                    }
-                },
-                "color": {
-                    "field": "cluster",
-                    "type": "nominal",
-                    "legend": null
-                },
-                "order": {
-                    "field": "pop",
-                    "type": "quantitative",
-                    "sort": "descending"
-                }
-            }
-        }
-    }
-}
+## Observações
+1) O trabalho deve ser desenvolvido, obrigatoriamente, usando o Observable Framework (https://observablehq.com/framework/).
+2) O trabalho deve ser feito em dupla.
+3) A entrega do código desenvolvido deve ser feita através do Google Classroom. Não serão considerados trabalhos enviados por email ou usando repositórios do GitHub.
 
 
-function ex02(divWidth) {
-    return {
-        spec: {
-            width: divWidth,
-            height: 400,
-            data: {
-                values: gapSubset
-            },
-            "mark": {
-                "type": "bar",
-                "tooltip": true
-            },
-            "encoding": {
-                "x": {
-                    "field": "country",
-                    "type": "nominal"
-                },
-                "y": {
-                    "field": "pop",
-                    "type": "quantitative",
-                    "axis": {
-                        "format": "~s"
-                    }
-                },
-                "color": {
-                    "field": "cluster",
-                    "type": "nominal",
-                    "legend": null
-                },
-                "order": {
-                    "field": "pop",
-                    "type": "quantitative",
-                    "sort": "descending"
-                }
-            }
-        }
-    }
-}
-```
+## Data set 
+O data set que deve ser usado no primeiro trabalho está disponível em https://www.kaggle.com/datasets/nelgiriyewithana/top-spotify-songs-2023
 
+Este conjunto de dados contém uma lista das músicas mais populares de 2023 em serviços de streaming. O conjunto de dados inclui informações como nome da faixa, nome do(s) artista(s), data de lançamento, listas de reprodução e paradas do Spotify, estatísticas de streaming, presença do Apple Music, presença do Deezer, paradas do Shazam e vários recursos de áudio. Para mais detalhes sobre o conjunto de dados, consulte o link.
 
-## Análise
-Você deve responder cada pergunta formulada no enunciado com base nas visualizações construídas.  
-Utilize essa área para esta finalidade.
+## Perguntas 
+1) Existe alguma característica que faz uma música ter mais chance de se tornar popular?
+2) O conjunto das top 10 músicas e dos top 10 artistas varia muito se considerarmos apenas musicas lançadas no mesmo ano?
+3) Discuta as diferenças entre as plataformas (Spotify, Deezer, Apple Music e Shazam)?
 
-**Observações:**
-1. Escreva sua argumentação de forma clara, direta e organizada. Sendo assim, evite respostas muito curtas ou textos longos demais.
-2. Caso a sua argumentação dependa de interações ou parâmetro modificados pelo usuário na interface, é importante que você descreva os passos necessários para reporduzir sua análise.
-
-## Design utilizados
-Por fim, você deve justificar a escolha dos designs das visualizações construídas nos trabalhos.  
-Utilize esta área para esta finalidade.
-
-**Observações:**
-1. Descreva quais marcadores e canais visuais foram utilizados.
-2. Argumente se existe algum viés que pode ser causado pelo design escolhido.
-3. Discuta sobre outros temas vistos em aula como separabilidade e discriminabilidade dos canais visuais.
+## Alunos:
+1) Deniel Rhudson de Lima Borret
+2) Gabriel Soares de Souza Desmarais
